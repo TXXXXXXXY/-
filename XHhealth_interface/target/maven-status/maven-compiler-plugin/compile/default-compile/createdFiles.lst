@@ -1,0 +1,10 @@
+com\xinhua\service\MemberService.class
+com\xinhua\service\UploadReportService.class
+com\xinhua\service\OrderService.class
+com\xinhua\service\SetmealService.class
+com\xinhua\service\OrderSettingService.class
+com\xinhua\service\ReportService.class
+com\xinhua\service\CheckItemService.class
+com\xinhua\service\UserService.class
+com\xinhua\service\BOrderService.class
+com\xinhua\service\CheckGroupService.class

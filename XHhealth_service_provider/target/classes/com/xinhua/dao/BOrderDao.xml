@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinhua.dao.BOrderDao" >
+    <!--分页查询+查询-->
+    <select id="selectByCondition" parameterType="string"
+            resultType="com.xinhua.pojo.Order">
+        select o.id,
+               o.orderDate,
+               m.name as mName,
+               m.phoneNumber as mPhone,
+               s.name as sName,
+               o.orderType,
+               o.orderStatus
+        from t_order o,t_member m,t_setmeal s
+        where o.member_id = m.id and o.setmeal_id = s.id
+        <if test="value != null and value.length > 0">
+            and  m.name = #{value}
+        </if>
+            order BY o.orderDate
+    </select>
+    <!--y-->
+    <update id="setStatusY" parameterType="int">
+        update t_order
+        <set>
+                orderStatus = '已到诊',
+        </set>
+        where id = #{id}
+    </update>
+    <!--n-->
+    <update id="SetStatusN" parameterType="int">
+        update t_order
+        <set>
+            orderStatus = '未到诊',
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新华健康登录</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<script src="../js/flexible.js" type="text/javascript" ></script>
+<!--		<script src="../js/zepto.min.js" type="text/javascript" ></script>-->
+		<script src="../plugins/jquery/dist/jquery.min.js"></script>
+		<script src="../plugins/healthmobile.js"></script>
+		<script src="../plugins/vue/vue.js"></script>
+		<script src="../plugins/vue/axios-0.18.0.js"></script>
+		<script src="../plugins/elementui/index.js"></script>
+	</head>
+	<body>
+	<div class="app" id="app">
+		<!--头像-->
+		<div class="head">
+			<div class="img">
+				<div class="i">
+				<img src="../picture/2.png">
+				</div>
+			</div>
+			<p>新华健康管理</p>
+		</div>
+		<!--登陆-->
+		<form id='login-form'>
+			<div class="item">
+				<input class="input" id="name" v-model="loginInfo.telephone" type="text" id='account' maxlength="11" placeholder="请输入您的手机号" autocomplete="off" >
+			</div>
+			<div class="item">
+				<input class="input" id="vcode" v-model="loginInfo.validateCode" type="text" id="password" maxlength="6" placeholder="请输入验证码" autocomplete="off" >
+				<input id="validateCodeButton" @click="sendValidateCode()" type="button" value="获取验证码"></input>
+			</div>
+			<div class="submit"><a @click="login()" href="#">登 录</a></div>
+		</form>
+		<!--第三方登陆-->
+		<div class="other-login">
+			<p><span>使用第三方帐号登录</span></p>
+			<div class="third">
+				<ul>
+					<li><img src="../picture/icon-qq.png"></li>
+					<li><img src="../picture/icon-weixin.png"></li>
+					<li><img src="../picture/icon-weibo.png"></li>
+				</ul>
+			</div>
+		</div>
+		<!--尾部-->
+		<div class="footer">
+<!--			<img src="../picture/logo.png">-->
+			<p>登录使用就表示同意<a href="javascript:;">《新华健康用户协议》</a>和<a href="javascript:;">《新华健康隐私条款》</a></p>
+		</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	var vue = new Vue({
+		el:'#app',
+		data:{
+			loginInfo:{}//登录信息
+		},
+		methods:{
+			//发送验证码
+			sendValidateCode(){
+				var telephone = this.loginInfo.telephone;
+				if (!checkTelephone(telephone)) {
+					this.$message.error('请输入正确的手机号');
+					return false;
+				}
+				validateCodeButton = $("#validateCodeButton")[0];
+				clock = window.setInterval(doLoop, 1000); //一秒执行一次
+				axios.post("/validateCode/send4Login.do?telephone=" + telephone).then((response) => {
+					if(!response.data.flag){
+						//验证码发送失败
+						this.$message.error('验证码发送失败，请检查手机号输入是否正确');
+					}
+					else{
+						this.$message.success(response.data.message);
+					}
+				});
+			},
+			//登录
+			login(){
+				var telephone = this.loginInfo.telephone;
+				if (!checkTelephone(telephone)) {
+					this.$message.error('请输入正确的手机号');
+					return false;
+				}
+				axios.post("/member/login.do",this.loginInfo).then((response) => {
+					if(response.data.flag){
+						//登录成功,跳转到index.html
+						window.location.href="index.html";
+					}else{
+						//失败，提示失败信息
+						this.$message.error(response.data.message);
+					}
+				});
+			}
+		}
+	});
+</script>

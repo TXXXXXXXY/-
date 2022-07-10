@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="XHhealth_backend:war">
+    <output-path>$PROJECT_DIR$/XHhealth_backend/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>XHhealth_backend</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="XHhealth_backend-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="XHhealth_backend:war exploded" />
+    </root>
+  </artifact>
+</component>

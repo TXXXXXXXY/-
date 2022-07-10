@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/XHhealth_backend/XHhealth_backend.iml" filepath="$PROJECT_DIR$/XHhealth_backend/XHhealth_backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XHhealth_common/XHhealth_common.iml" filepath="$PROJECT_DIR$/XHhealth_common/XHhealth_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XHhealth_interface/XHhealth_interface.iml" filepath="$PROJECT_DIR$/XHhealth_interface/XHhealth_interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XHhealth_jobs/XHhealth_jobs.iml" filepath="$PROJECT_DIR$/XHhealth_jobs/XHhealth_jobs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XHhealth_mobile/XHhealth_mobile.iml" filepath="$PROJECT_DIR$/XHhealth_mobile/XHhealth_mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XHhealth_parent.iml" filepath="$PROJECT_DIR$/XHhealth_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XHhealth_service_provider/XHhealth_service_provider.iml" filepath="$PROJECT_DIR$/XHhealth_service_provider/XHhealth_service_provider.iml" />
+    </modules>
+  </component>
+</project>

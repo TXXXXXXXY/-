@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- 页面meta -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>新华健康</title>
+  <meta name="description" content="新华健康">
+  <meta name="keywords" content="新华健康">
+  <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="../plugins/elementui/index.css">
+  <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
+    .datatable {
+      position: relative;
+      box-sizing: border-box;
+      -webkit-box-flex: 1;
+      width: 100%;
+      max-width: 100%;
+      font-size: 14px;
+      color: rgb(96, 98, 102);
+      overflow: hidden;
+      flex: 1 1 0%;
+    }
+    .datatable td, .datatable th {
+      padding: 12px 0;
+      min-width: 0;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      position: relative;
+      text-align: left;
+    }
+  </style>
+</head>
+<body class="hold-transition">
+<div id="app">
+  <div class="content-header">
+    <h1>会员管理<small>体检上传</small></h1>
+    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+      <el-breadcrumb-item>体检上传</el-breadcrumb-item>
+    </el-breadcrumb>
+  </div>
+  <div class="app-container">
+    <div class="box">
+      <div class="filter-container">
+        <el-input placeholder="姓名/手机号" v-model="pagination.queryString" style="width: 200px;" class="filter-item"></el-input>
+        <el-button @click="findPage()" class="dalfBut">查询</el-button>
+      </div>
+      <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
+        <el-table-column type="index" align="center" label="序号"></el-table-column>
+        <el-table-column prop="orderDate" label="预约日期" align="center"></el-table-column>
+        <el-table-column prop="mName" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="mPhone" label="手机号码" align="center"></el-table-column>
+        <el-table-column prop="sName" label="预约套餐" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click="handleUpload(scope.row)">上传报告</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination-container">
+        <el-pagination
+                class="pagiantion"
+                @current-change="handleCurrentChange"
+                :current-page="pagination.currentPage"
+                :page-size="pagination.pageSize"
+                layout="total, prev, pager, next, jumper"
+                :total="pagination.total">
+        </el-pagination>
+      </div>
+      <!-- 上传弹窗 -->
+      <div class="add-form">
+        <el-dialog title="上传体检" :visible.sync="dialogFormVisible4Edit">
+          <template>
+          <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="姓名" prop="mName">
+                  <el-input v-model="formData.mName" :disabled="true"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="手机号码" prop="mPhone">
+                  <el-input v-model="formData.mPhone" :disabled="true"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="上传图片">
+                  <el-upload
+                          class="avatar-uploader"
+                          action="/uploadReport/upload.do"
+                          :auto-upload="autoUpload"
+                          name="imgFile"
+                          :show-file-list="false"
+                          :on-success="handleAvatarSuccess"
+                          :before-upload="beforeAvatarUpload">
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          </template>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible4Edit = false">取消</el-button>
+            <el-button type="primary" @click="handleEdit()">确定</el-button>
+          </div>
+      </el-dialog>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+<!-- 引入组件库 -->
+<script src="../js/vue.js"></script>
+<script src="../plugins/elementui/index.js"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script>
+  var vue = new Vue({
+    el: '#app',
+    data:{
+      autoUpload:true,//自动上传
+      imageUrl:null,//模型数据，用于上传图片完成后图片预览
+      pagination: {//分页相关模型数据
+        currentPage: 1,//当前页码
+        pageSize:10,//每页显示的记录数
+        total:0,//总记录数
+        queryString:null//查询条件
+      },
+      dataList: [],//当前页要展示的分页列表数据
+      formData: {},//表单数据
+      dialogFormVisible: false,//增加表单是否可见
+      dialogFormVisible4Edit:false,//编辑表单是否可见
+    },
+    //钩子函数，VUE对象初始化完成后自动执行
+    created() {
+      this.findPage();
+    },
+    methods: {
+      //文件上传成功后的钩子，response为服务端返回的值，file为当前上传的文件封装成的js对象
+      handleAvatarSuccess(response, file) {
+        this.imageUrl = "http://r9m1eey51.hn-bkt.clouddn.com/"+response.data;
+        this.$message({
+          message: response.message,
+          type: response.flag ? 'success' : 'error'
+        });
+        //设置模型数据（图片名称），后续提交ajax请求时会提交到后台最终保存到数据库
+        this.formData.report = response.data;
+      },
+      //上传图片之前执行
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isJPG) {
+          this.$message.error('上传套餐图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传套餐图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      //分页查询
+      findPage() {
+        //分页参数
+        var param = {
+          currentPage:((this.pagination.queryString==null||this.pagination.queryString=="")? this.pagination.currentPage:1),//页码
+          pageSize:this.pagination.pageSize,//每页显示的记录数
+          queryString:this.pagination.queryString//查询条件
+        };
+        //请求后台
+        axios.post("/uploadReport/findPage.do",param).then((response)=> {
+          //为模型数据赋值，基于VUE的双向绑定展示到页面
+          this.dataList = response.data.rows;
+          this.pagination.total = response.data.total;
+        });
+      },
+      // 重置表单
+      resetForm() {
+        this.formData = {};
+      },
+      // 上传报告
+      handleUpload(row) {
+        this.dialogFormVisible4Edit = true;
+        axios.get("/uploadReport/findByOrderId.do?id=" + row.id).then((res)=>{
+          if(res.data.flag){
+            //设置编辑窗口属性，dialogFormVisible4Edit为true表示显示
+            //为模型数据设置值，基于VUE双向数据绑定回显到页面
+            this.formData = res.data.data;
+          }else{
+            this.$message.error("获取数据失败，请刷新当前页面");
+          }
+        });
+        //发送请求获取检查项信息
+      },
+      handleEdit(){
+        axios.post("/uploadReport/edit.do",this.formData).
+        then((response)=> {
+          this.dialogFormVisible4Edit = false;
+          if(response.data.flag){
+            this.$message({
+              message: response.data.message,
+              type: 'success'
+            });
+          }else{
+            this.$message.error(response.data.message);
+          }
+        }).finally(()=> {
+          this.findPage();
+        });
+      },
+      //切换页码
+      handleCurrentChange(currentPage) {
+        //currentPage为切换后的页码
+        this.pagination.currentPage = currentPage;
+        this.findPage();
+      }
+    }
+  })
+</script>
+</html>

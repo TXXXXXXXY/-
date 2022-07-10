@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="XHhealth_common" />
+        <module name="XHhealth_interface" />
+        <module name="XHhealth_backend" />
+        <module name="XHhealth_mobile" />
+        <module name="XHhealth_jobs" />
+        <module name="XHhealth_service_provider" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="XHhealth_backend" target="1.8" />
+      <module name="XHhealth_common" target="1.8" />
+      <module name="XHhealth_interface" target="1.8" />
+      <module name="XHhealth_jobs" target="1.8" />
+      <module name="XHhealth_mobile" target="1.8" />
+      <module name="XHhealth_parent" target="1.8" />
+      <module name="XHhealth_service_provider" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

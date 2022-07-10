@@ -1,0 +1,4 @@
+com\xinhua\controller\SetmealController.class
+com\xinhua\controller\ValidateCodeController.class
+com\xinhua\controller\OrderController.class
+com\xinhua\controller\MemberController.class

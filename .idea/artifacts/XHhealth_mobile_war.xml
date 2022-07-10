@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="XHhealth_mobile:war">
+    <output-path>$PROJECT_DIR$/XHhealth_mobile/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>XHhealth_mobile</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="XHhealth_mobile-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="XHhealth_mobile:war exploded" />
+    </root>
+  </artifact>
+</component>

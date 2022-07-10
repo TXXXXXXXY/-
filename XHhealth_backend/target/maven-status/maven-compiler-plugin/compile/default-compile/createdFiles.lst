@@ -1,0 +1,9 @@
+com\xinhua\controller\OrderSettingController.class
+com\xinhua\controller\CheckGroupController.class
+com\xinhua\controller\UploadReportController.class
+com\xinhua\controller\BOrderController.class
+com\xinhua\controller\UserController.class
+com\xinhua\controller\CheckItemController.class
+com\xinhua\controller\SetmealController.class
+com\xinhua\service\SpringSecurityUserService.class
+com\xinhua\controller\ReportController.class
